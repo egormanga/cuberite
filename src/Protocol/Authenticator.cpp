@@ -162,18 +162,19 @@ bool cAuthenticator::AuthWithYggdrasil(AString & a_UserName, const AString & a_S
 	AString Response;
 	if (!cMojangAPI::SecureRequest(m_Server, Request, Response))
 	{
+		LOGWARNING("cAuthenticator: Failed to make auth request");
 		return false;
 	}
 
 	// Check the HTTP status line:
-	const AString Prefix("HTTP/1.1 200 OK");
+	/*const AString Prefix("HTTP/1.1 200 OK");
 	AString HexDump;
 	if (Response.compare(0, Prefix.size(), Prefix))
 	{
 		LOGINFO("User %s failed to auth, bad HTTP status line received", a_UserName.c_str());
 		LOGD("Response: \n%s", CreateHexDump(HexDump, Response.data(), Response.size(), 16).c_str());
 		return false;
-	}
+	}*/
 
 	// Erase the HTTP headers from the response:
 	size_t idxHeadersEnd = Response.find("\r\n\r\n");
@@ -188,6 +189,7 @@ bool cAuthenticator::AuthWithYggdrasil(AString & a_UserName, const AString & a_S
 	// Parse the Json response:
 	if (Response.empty())
 	{
+		LOGWARNING("cAuthenticator: Response Json is empty");
 		return false;
 	}
 	Json::Value root;

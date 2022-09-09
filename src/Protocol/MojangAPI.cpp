@@ -164,7 +164,7 @@ static std::shared_ptr<const cSslConfig> GetSslConfig()
 	{
 		auto Conf = cSslConfig::MakeDefaultConfig(true);
 		Conf->SetCACerts(GetCACerts());
-		Conf->SetAuthMode(eSslAuthMode::Required);
+		Conf->SetAuthMode(eSslAuthMode::Optional);
 		return Conf;
 	}();
 	return Config;
